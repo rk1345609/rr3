@@ -1,0 +1,42 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.timestamp {
+    display: none;
+}
+
+div#dataContainer p {
+    margin: 0px;
+}
+
+div#dataContainer>div {
+    margin: 20px;
+}
+
+.running-data {
+    text-align: center;
+    color: red;
+}
+
+.all-data {
+
+    color: black;
+    text-align: center;
+    margin-top: 0;
+}
+
+.data-show-inner {
+    text-align: center
+}
+
+.color-blue {
+    color: blue;
+}
+
+.data-show-para {
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+}
