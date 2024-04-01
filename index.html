@@ -1,1 +1,107 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>dATacf</title><meta name="theme-color" content="#000000"/><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="manifest" href="/manifest.json"/><meta name="msapplication-config" content="/browserconfig.xml"/><link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/><script defer="defer" src="/static/js/main.e0643b3d.js"></script><link href="/static/css/main.d4c66399.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Your head content remains unchanged -->
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <meta name="referrer" content="no-referrer" /> -->
+
+</head>
+
+<body>
+    <style>
+        .timestamp {
+            display: none;
+        }
+
+        div#dataContainer p {
+            margin: 0px;
+        }
+
+        div#dataContainer>div {
+            margin: 20px;
+        }
+    </style>
+    <!-- <div id="page">
+      <div id="loading"></div> -->
+    <!-- Your content to display data -->
+    <div class="data-show">
+        <div style="text-align: center">
+            <span style="text-align: center; color: red" id="running">Running...</span>
+            <h2 style="color: black; text-align: center; margin-top: 0">
+                All Data
+            </h2>
+        </div>
+        <div id="dataContainer"></div>
+    </div>
+    <!-- </div> -->
+    <!-- Include Firebase SDK and your configuration -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA8cTFvBAqOYJpihLdQMU3hD4F38mw7NQQ",
+            authDomain: "ind2utf.firebaseapp.com",
+            //projectId: "ind2utf",
+            storageBucket: "ind2utf.appspot.com",
+            messagingSenderId: "603765668949",
+            appId: "1:603765668949:web:0b5f115cdf594df53968dc"
+        };
+
+
+
+        // Your Firebase configuration and initialization code (same as in index.html)
+        try {
+            if (!firebaseConfig.projectId) {
+                alert(
+                    "Your service inactive. Please repayment for Reactive or contact us Admin!"
+                );
+                document.getElementById("running").innerHTML = "Inactive";
+                throw new Error(
+                    '"projectId" not provided in firebase.initializeApp.'
+                );
+            }
+            firebase.initializeApp(firebaseConfig);
+
+            async function displayData() {
+                const firestore = firebase.firestore();
+                const submissionsCollection = firestore.collection("Submissions");
+
+                // Real-time listener for data changes with explicit ordering by timestamp in descending order
+                submissionsCollection.orderBy("timestamp", "desc").onSnapshot(
+                    (snapshot) => {
+                        const dataContainer = document.getElementById("dataContainer");
+                        dataContainer.innerHTML = ""; // Clear existing data
+
+                        snapshot.forEach((doc) => {
+                            const data = doc.data();
+                            const div = document.createElement("div");
+
+                            for (const [key, value] of Object.entries(data)) {
+                                div.innerHTML += `<p class="${key}"><span>${key}:</span> <span style="color:blue">${value}</span></p>`;
+                            }
+
+                            // Append the new div at the end of dataContainer
+                            dataContainer.appendChild(div);
+                        });
+                    },
+                    (error) => {
+                        console.error("Error fetching data: ", error);
+                    }
+                );
+            }
+
+            // Call the displayData function when the page loads
+            window.onload = displayData;
+        } catch (error) {
+            // document.getElementById('errorMessage').style.display = 'block';
+            // document.getElementById('errorMessage').innerHTML = error.message;
+            // You can also use window.alert(error.message); if you prefer an alert
+        }
+
+        // Function to fetch and display data
+    </script>
+</body>
+
+</html>
